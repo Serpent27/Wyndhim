@@ -5,7 +5,7 @@
 # Set COMPRESSED to "YES" to create a compressed program
 # ----------------------------
 
-NAME        ?= WINDHYM
+NAME        ?= WYNDHIM
 COMPRESSED  ?= NO
 ICON        ?= icon.png
 DESCRIPTION ?= "Windhym Encryption Algorithm"

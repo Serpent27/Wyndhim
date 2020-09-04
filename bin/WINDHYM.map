@@ -6,10 +6,10 @@ libs     D1A882 D1A882             0h
 startup  D1A882 D1A8C1            3Fh
 cleanup  D1A8C1 D1A8D5            14h
 exit     D1A8D5 D1A8DB             6h
-code     D1A8DB D1BA3F          1164h
-data     D1BA3F D1BA3F             0h
-strsect  D1BA3F D1BB6B           12Ch
-text     D1BB6B D1BBAE            43h
+code     D1A8DB D1BA0F          1134h
+data     D1BA0F D1BA0F             0h
+strsect  D1BA0F D1BB3B           12Ch
+text     D1BB3B D1BB7E            43h
 bss      D031F6 D031F6 D13FD6      0h
 header   D1A87F D1A882             3h
 
@@ -172,25 +172,25 @@ _exit                     = D1A8D7
 __exit                    = D1A8B0
 __exitsp                  = D1A8B0
 __errsp                   = D1A8B0
-_main                     = D1B1C0
-_nop                      = D1B1B7
-_hash_key                 = D1B1AE
-_from_hex                 = D1B140
-_to_hex                   = D1B0B7
-_hex_to_int               = D1B068
-_decrypt                  = D1AFAF
-_encrypt                  = D1AEF6
-_expand_key               = D1AE21
-_dec                      = D1ADD9
-_enc                      = D1AD95
-_round_dec                = D1AD5D
-_round_enc                = D1AD25
-_round_dec_per            = D1AC92
+_main                     = D1B190
+_nop                      = D1B187
+_hash_key                 = D1B17E
+_from_hex                 = D1B110
+_to_hex                   = D1B087
+_hex_to_int               = D1B038
+_decrypt                  = D1AF7F
+_encrypt                  = D1AEC6
+_expand_key               = D1ADF1
+_dec                      = D1ADA9
+_enc                      = D1AD65
+_round_dec                = D1AD2D
+_round_enc                = D1ACF5
+_round_dec_per            = D1AC7C
 _round_enc_per            = D1AC03
 _round_mix                = D1AB7A
 _round_dec_sub            = D1AABE
 _round_enc_sub            = D1AA0C
-_pbox_dec                 = D1BB9E
-_pbox_enc                 = D1BB8E
-_round_combinator         = D1BB7C
-_hex_enc                  = D1BB6B
+_pbox_dec                 = D1BB6E
+_pbox_enc                 = D1BB5E
+_round_combinator         = D1BB4C
+_hex_enc                  = D1BB3B

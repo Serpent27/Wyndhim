@@ -113,23 +113,21 @@ void round_mix(unsigned char *msg, unsigned char *tmp){
 PSEC_INLINE
 void round_enc_per(unsigned char *msg, unsigned char *key, unsigned char *tmp){
 	size_t a;
-	unsigned char b = key[0] & MOD_BLK_SIZE;
 	for(a=0; a<MSG_SIZE; ++a){
 		tmp[a] = msg[a];
 	}
 	for(a=0; a<MSG_SIZE; ++a){
-		msg[pbox_enc[a ^ b]] = tmp[a];
+		msg[pbox_enc[a]] = tmp[a];
 	}
 }
 PSEC_INLINE
 void round_dec_per(unsigned char *msg, unsigned char *key, unsigned char *tmp){
 	size_t a;
-	unsigned char b = key[0] & MOD_BLK_SIZE;
 	for(a=0; a<MSG_SIZE; ++a){
 		tmp[a] = msg[a];
 	}
 	for(a=0; a<MSG_SIZE; ++a){
-		msg[pbox_dec[a] ^ b] = tmp[a];
+		msg[pbox_dec[a]] = tmp[a];
 	}
 }
 PSEC_INLINE

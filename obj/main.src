@@ -353,12 +353,8 @@ L_10:
 
 
 _round_enc_per:
-	LD	HL,-4
+	LD	HL,-3
 	CALL	__frameset
-	LD	HL,(IX+9)
-	LD	A,(HL)
-	AND	A,15
-	LD	(IX+-4),A
 	LD	BC,0
 	LD	(IX+-3),BC
 	JR	L_14
@@ -387,21 +383,16 @@ L_14:
 L_15:
 	LD	BC,(IX+-3)
 	LD	HL,(IX+12)
-	LD	A,(IX+-4)
-	LD	DE,(IX+6)
 	ADD	HL,BC
 	LD	IY,HL
-	UEXT	HL
-	LD	L,A
-	LD	BC,HL
 	LD	HL,(IX+-3)
-	CALL	__ixor
 	LD	BC,_pbox_enc
 	ADD	HL,BC
 	LD	A,(HL)
 	UEXT	HL
 	LD	L,A
-	ADD	HL,DE
+	LD	BC,(IX+6)
+	ADD	HL,BC
 	LD	A,(IY)
 	LD	(HL),A
 	LD	BC,(IX+-3)
@@ -421,24 +412,19 @@ L_17:
 ;**************************** _round_enc_per ***************************
 ;Name                         Addr/Register   Size   Type
 ;_pbox_enc                           STATIC     16   variable
-;b                                     IX-4      1   variable
 ;a                                     IX-3      3   variable
 ;tmp                                  IX+12      3   parameter
 ;key                                   IX+9      3   parameter
 ;msg                                   IX+6      3   parameter
 
 
-; Stack Frame Size: 19 (bytes)
+; Stack Frame Size: 18 (bytes)
 ;       Spill Code: 0 (instruction)
 
 
 _round_dec_per:
-	LD	HL,-4
+	LD	HL,-3
 	CALL	__frameset
-	LD	HL,(IX+9)
-	LD	A,(HL)
-	AND	A,15
-	LD	(IX+-4),A
 	LD	BC,0
 	LD	(IX+-3),BC
 	JR	L_22
@@ -475,16 +461,9 @@ L_23:
 	LD	A,(HL)
 	UEXT	HL
 	LD	L,A
-	LD	DE,HL
-	LD	A,(IX+-4)
-	UEXT	HL
-	LD	L,A
-	LD	A,(IY)
-	LD	BC,HL
-	LD	HL,DE
-	CALL	__ixor
 	LD	BC,(IX+6)
 	ADD	HL,BC
+	LD	A,(IY)
 	LD	(HL),A
 	LD	BC,(IX+-3)
 	INC	BC
@@ -503,14 +482,13 @@ L_25:
 ;**************************** _round_dec_per ***************************
 ;Name                         Addr/Register   Size   Type
 ;_pbox_dec                           STATIC     16   variable
-;b                                     IX-4      1   variable
 ;a                                     IX-3      3   variable
 ;tmp                                  IX+12      3   parameter
 ;key                                   IX+9      3   parameter
 ;msg                                   IX+6      3   parameter
 
 
-; Stack Frame Size: 19 (bytes)
+; Stack Frame Size: 18 (bytes)
 ;       Spill Code: 0 (instruction)
 
 
@@ -1473,12 +1451,10 @@ _nop:
 ;  244			#endif
 ;  245			
 ;  246			#ifdef ENCDEC_CHOICE
+	CALL	__frameset0
 ;  247				if(choice[0] == 'x' || choice[0] == 'X'){
 ;  248				for(a=0; a<MSG_SIZE; ++a){
-	CALL	__frameset0
 ;  249					msg[a] = msg_in[a];
-;  250				}
-;  251				for(a=0; a<KEY_SIZE; ++a){
 	LD	SP,IX
 	POP	IX
 	RET	
@@ -1929,12 +1905,14 @@ L_139:
 	LD	BC,(IX+-3)
 	INC	BC
 	LD	(IX+-3),BC
+;  250				}
 L_141:
 	LD	BC,16
 	LD	HL,(IX+-3)
 	OR	A,A
 	SBC	HL,BC
 	JR	C,L_139
+;  251				for(a=0; a<KEY_SIZE; ++a){
 	LD	BC,0
 	LD	(IX+-3),BC
 	JR	L_144
