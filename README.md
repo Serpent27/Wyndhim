@@ -1,4 +1,4 @@
-# Windhym Encryption
+# Wyndhim Encryption
 #### Created by Alex Anderson < parsec29@protonmail.com >
 
 *Wyndhim is based on the [PARSEC](https://github.com/Serpent27/PARSEC) encryption algorithm.*
