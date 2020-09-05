@@ -3,6 +3,12 @@
 
 *Wyndhim is based on the [PARSEC](https://github.com/Serpent27/PARSEC) encryption algorithm.*
 
+### An important note:
+I mention this elsewhere, but I want to make sure it's prominent: While my ego causes me to like to think this algorithm is ready for the big-leagues it's simply lacking the proper review. I emphasize that this algorithm is *experimental* and this algorithm is the very definition of homebrew crypto.
+
+If you want to trust this algorithm for your secrets, you do so at your own risk...
+*That said, if you like this algorithm or the idea behind it I'd love for someone to help with a proper cryptanalysis!*
+
 ### What is Wyndhim?
 
 Wyndhim is an experimental attempt at an SP-network without an S-Box.
