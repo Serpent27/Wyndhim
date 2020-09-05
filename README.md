@@ -28,3 +28,23 @@ I thought, if I can split up the bits and use simple linear operations (bit-rota
 The ADDs propogate changes between bits and those changes get split and distributed among the rest of the message. AKA it's a normal SP-Network except with less emphasis on the *substitution* and more emphasis on *permutation*. Since I still need a reasonable amount of substitution to prevent it from becoming the world's most ridiculous extension of Vigenere, I used the S-Box simply to allow the permutation to create the effect of better substitution.
 
 I could go on about the design rationale (for example, why I chose to use 0b10101010/0b01010101 as the bitmask for diffusion and not 0b00001111/0b11110000, 0b10010011/0b01101100, etc) but I'm getting tired so maybe I'll release an update tomorrow to explain... Or maybe not, who knows?
+
+So, why is this algorithm made how it's made?
+
+If you notice above, I used the bitmask `0b10101010/0b01010101` to provide diffusion. I could have chosen 0b00001111/0b11110000, 0b10010011/0b01101100, etc; but I chose a very boring alternating pattern of `0`s and `1`s. Why?
+
+If you look at the S-Box-like operation I perform the most nonlinear part is an addition; making the S-Box (more than) slightly less-than-ideal. The reason I did this instead of implementing a proper S-Box is to prevent the need for lookup tables, or any non-constant-time operation. I didn't even like having the `ADD`s in there because I don't trust hardware manufacturers to keep their microcode constant-time, even for the most basic of operations. As such, the choice is to embrace timing attacks, speculative execution, etc; or sacrifice the S-Box in hopes that I can make up for it in other ways.
+
+If you know much about binary addition you'll know that any 2 bits that are both HIGH (1+1) will affect the position immediately more significant than them in the output. For this reason, I used an `ADD byte m[i], 0xFF` to propogate changes to nearby bits. I also used an XOR (actually 2 XORs) to create nonlinearity in which bits get flipped. Then, every flipped bit gets whisked away to meet up with other bits from somewhere else in the cipher; this way nonlinearity comes from the differences of which bits get moved where, instead of relying on the S-Box for that effect. Instead of using nonlinear operations I opted to use separate linear operations that fail to interact linearly when combined.
+
+For example, raising to an exponent is just repeated multiplication; multiplication is just repeated addition; and addition is as linear as an operation gets. But the way you use it causes it to *become* nonlinear. An XOR is linear, and an ADD is linear, but the operations mess with each others' mechanics to create something distinctly nonlinear. Then, you take half the bits, replace them with bits from an entirely separate part of the message, then do it again. See where I'm going with this?
+
+Imagine the polynomial `y=(x-5)(x-2)(x+8)(x-4)(x+7) + k`. That's a pretty linear system, and easy to work with. But what if I changed it to `y=((x XOR z)-5)(x-2)(x XOR z)(x-4)((x+7) XOR z) + k`? Would it help if I said `z=8`? It's Galois field arithmetic mixed with regular arithmetic. Each simple enough: they're both linear, but they don't play well together.
+
+Then all I need to do is propogate those nonlinearities as far as possible as fast as possible. Hence I used `10101010` as my bitmask - it's got more surface area to propogate changes.
+
+#### In short,
+I'm proposing we mix Galois fields with traditional arithmetic. Or more generally, mix things that don't like mixing - after all, isn't that what cryptography's all about?
+
+
+*And it's only using constant-time operations.*
