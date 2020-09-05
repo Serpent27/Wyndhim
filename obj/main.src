@@ -39,8 +39,6 @@ _round_combinator:
 	DB	222
 	DB	60
 	DB	244
-	DB	223
-	DB	210
 _pbox_enc:
 	DB	4
 	DB	7
@@ -162,7 +160,7 @@ L_2:
 
 ;**************************** _round_enc_sub ***************************
 ;Name                         Addr/Register   Size   Type
-;_round_combinator                   STATIC     18   variable
+;_round_combinator                   STATIC     16   variable
 ;a                                     IX-3      3   variable
 ;key                                   IX+9      3   parameter
 ;msg                                   IX+6      3   parameter
@@ -258,7 +256,7 @@ L_6:
 
 ;**************************** _round_dec_sub ***************************
 ;Name                         Addr/Register   Size   Type
-;_round_combinator                   STATIC     18   variable
+;_round_combinator                   STATIC     16   variable
 ;a                                     IX-3      3   variable
 ;key                                   IX+9      3   parameter
 ;msg                                   IX+6      3   parameter
@@ -706,7 +704,7 @@ L_44:
 	JR	L_43
 L_41:
 	LD	HL,(IX+-3)
-	LD	A,21
+	LD	A,23
 	CALL	__imul_b
 	LD	BC,(IX+-6)
 	CALL	__ixor
@@ -1451,10 +1449,18 @@ _nop:
 ;  244			#endif
 ;  245			
 ;  246			#ifdef ENCDEC_CHOICE
-	CALL	__frameset0
 ;  247				if(choice[0] == 'x' || choice[0] == 'X'){
 ;  248				for(a=0; a<MSG_SIZE; ++a){
 ;  249					msg[a] = msg_in[a];
+;  250				}
+;  251				for(a=0; a<KEY_SIZE; ++a){
+;  252					key[a] = key_in[a];
+;  253				}
+;  254				key[KEY_SIZE] = 0;
+	CALL	__frameset0
+;  255				
+;  256				#ifdef IGNORE_KEY
+;  257				for(a=0; a<KEY_SIZE; ++a){
 	LD	SP,IX
 	POP	IX
 	RET	
@@ -1905,19 +1911,16 @@ L_139:
 	LD	BC,(IX+-3)
 	INC	BC
 	LD	(IX+-3),BC
-;  250				}
 L_141:
 	LD	BC,16
 	LD	HL,(IX+-3)
 	OR	A,A
 	SBC	HL,BC
 	JR	C,L_139
-;  251				for(a=0; a<KEY_SIZE; ++a){
 	LD	BC,0
 	LD	(IX+-3),BC
 	JR	L_144
 L_142:
-;  252					key[a] = key_in[a];
 	LD	HL,IX
 	LD	BC,-235
 	ADD	HL,BC
@@ -1932,17 +1935,12 @@ L_142:
 	LD	BC,(IX+-3)
 	INC	BC
 	LD	(IX+-3),BC
-;  253				}
 L_144:
 	LD	BC,32
 	LD	HL,(IX+-3)
 	OR	A,A
 	SBC	HL,BC
 	JR	C,L_142
-;  254				key[KEY_SIZE] = 0;
-;  255				
-;  256				#ifdef IGNORE_KEY
-;  257				for(a=0; a<KEY_SIZE; ++a){
 ;  258					key[a] = 0;
 ;  259				}
 ;  260				#endif

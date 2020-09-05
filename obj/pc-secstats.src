@@ -39,8 +39,6 @@ _round_combinator:
 	DB	222
 	DB	60
 	DB	244
-	DB	223
-	DB	210
 _pbox_enc:
 	DB	4
 	DB	7
@@ -162,7 +160,7 @@ L_2:
 
 ;**************************** _round_enc_sub ***************************
 ;Name                         Addr/Register   Size   Type
-;_round_combinator                   STATIC     18   variable
+;_round_combinator                   STATIC     16   variable
 ;a                                     IX-3      3   variable
 ;key                                   IX+9      3   parameter
 ;msg                                   IX+6      3   parameter
@@ -258,7 +256,7 @@ L_6:
 
 ;**************************** _round_dec_sub ***************************
 ;Name                         Addr/Register   Size   Type
-;_round_combinator                   STATIC     18   variable
+;_round_combinator                   STATIC     16   variable
 ;a                                     IX-3      3   variable
 ;key                                   IX+9      3   parameter
 ;msg                                   IX+6      3   parameter
@@ -706,7 +704,7 @@ L_44:
 	JR	L_43
 L_41:
 	LD	HL,(IX+-3)
-	LD	A,21
+	LD	A,23
 	CALL	__imul_b
 	LD	BC,(IX+-6)
 	CALL	__ixor

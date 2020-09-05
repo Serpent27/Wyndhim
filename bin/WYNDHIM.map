@@ -9,7 +9,7 @@ exit     D1A8D5 D1A8DB             6h
 code     D1A8DB D1BA0F          1134h
 data     D1BA0F D1BA0F             0h
 strsect  D1BA0F D1BB3B           12Ch
-text     D1BB3B D1BB7E            43h
+text     D1BB3B D1BB7C            41h
 bss      D031F6 D031F6 D13FD6      0h
 header   D1A87F D1A882             3h
 
@@ -190,7 +190,7 @@ _round_enc_per            = D1AC03
 _round_mix                = D1AB7A
 _round_dec_sub            = D1AABE
 _round_enc_sub            = D1AA0C
-_pbox_dec                 = D1BB6E
-_pbox_enc                 = D1BB5E
+_pbox_dec                 = D1BB6C
+_pbox_enc                 = D1BB5C
 _round_combinator         = D1BB4C
 _hex_enc                  = D1BB3B
