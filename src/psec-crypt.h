@@ -48,12 +48,15 @@
 const unsigned char hex_enc[] = "0123456789ABCDEF";
 //unsigned char hex_dec[16];
 
-const unsigned char round_combinator[] = {0x3A, 0x48, 0x9B, 0x95, 0xD7, 0xD6, 0xFA, 0x6A, 0x26, 0x71, 0xC0, 0x82, 0x32, 0xDE, 0x3C, 0xF4, 0xDF, 0xD2}; // this takes the place of an S-box. The round combinator is simply a string of random bytes, with length equal to `BLK_SIZE`
+const unsigned char round_combinator[] = {0x3A, 0x48, 0x9B, 0x95, 0xD7, 0xD6, 0xFA, 0x6A, 0x26, 0x71, 0xC0, 0x82, 0x32, 0xDE, 0x3C, 0xF4};	// this takes the place of an S-box. The round combinator is simply a string of random bytes, with length equal to `BLK_SIZE`
+																		// You can generate your own if you want to
 
-const unsigned char pbox_enc[] = {4, 7, 15, 6, 14, 8, 2, 0, 12, 1, 11, 3, 10, 5, 13, 9};
-const unsigned char pbox_dec[] = {7, 9, 6, 11, 0, 13, 3, 1, 5, 15, 12, 10, 8, 14, 4, 2};
-//const unsigned char pbox_enc[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0};
-//const unsigned char pbox_dec[] = {15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+const unsigned char pbox_enc[] = {4, 7, 15, 6, 14, 8, 2, 0, 12, 1, 11, 3, 10, 5, 13, 9};	// You can create your own P-Box. I used the same P-Box PARSEC uses.
+const unsigned char pbox_dec[] = {7, 9, 6, 11, 0, 13, 3, 1, 5, 15, 12, 10, 8, 14, 4, 2};	// The script to create random P-Boxes can be found at:
+												// https://github.com/Serpent27/PARSEC/blob/master/psec-spgen
+
+//const unsigned char pbox_enc[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0};	// These P-Boxes are intentionally INSECURE. I used them for testing
+//const unsigned char pbox_dec[] = {15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};	// I wanted to see how the P-Box affects the output
 
 
 //const unsigned char pbox_enc[] = {11, 16, 21, 6, 57, 10, 23, 8, 3, 5, 30, 38, 7, 46, 58, 33, 54, 9, 55, 1, 49, 41, 4, 13, 53, 17, 56, 39, 47, 20, 63, 59, 15, 48, 29, 12, 60, 35, 18, 42, 50, 61, 44, 36, 26, 0, 31, 14, 45, 22, 24, 25, 51, 37, 40, 19, 2, 52, 27, 28, 62, 43, 34, 32};
@@ -73,15 +76,20 @@ PSEC_INLINE
 void round_enc_sub(unsigned char *msg, unsigned char *key){
 	size_t a;
 	for(a=0; a<MSG_SIZE; ++a){
-		msg[a] += a;
+		msg[a] += a;	// I added this when I was playing around with possible boxes
+				// I left it because I figure it can't hurt security
 		msg[a] = ROL(msg[a], 3); // bit-rotate changes which bits are used in each operation
 		msg[a] ^= key[a]; // mix the key into the message
-		msg[a] += 0xFF;
-		msg[a] ^= round_combinator[a]; // using addition/subtraction mixes the bits, making it nonlinear once they're split up and mixed with the key in the next round
+		msg[a] += 0xFF; // ADD contrasts XOR, creating nonlinearity
+				// using addition/subtraction mixes the bits, making
+				//it nonlinear once they're split up and mixed with the key in the next round
+		msg[a] ^= round_combinator[a];	// Each round is meant to affect the next round. That's why
+						// the round combinator is *after* the key mixing instead of
+						// before. Effectively, each round has a different S-Box
 	}
 }
 PSEC_INLINE
-void round_dec_sub(unsigned char *msg, unsigned char *key){
+void round_dec_sub(unsigned char *msg, unsigned char *key){	// inverse of round_enc_sub
 	size_t a;
 	for(a=0; a<MSG_SIZE; ++a){
 		msg[a] ^= round_combinator[a];
@@ -172,7 +180,7 @@ void expand_key(unsigned char *key, unsigned char *exp_key){
 		for(b=0; b<KEY_SIZE; ++b){
 			//os_ClrHome();
 //			os_PutStrFull(text);
-			exp_key[a * MSG_SIZE + b] ^= key[((a * 21) ^ b) & MOD_BLK_SIZE]; // 21 is prime, allowing for better shuffling of each round key
+			exp_key[a * MSG_SIZE + b] ^= key[((a * 23) ^ b) & MOD_BLK_SIZE];	// 23 is prime, allowing for better shuffling of each round key
 		}
 	}
 }
