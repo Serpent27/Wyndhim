@@ -29,6 +29,10 @@ The ADDs propogate changes between bits and those changes get split and distribu
 
 I could go on about the design rationale (for example, why I chose to use 0b10101010/0b01010101 as the bitmask for diffusion and not 0b00001111/0b11110000, 0b10010011/0b01101100, etc) but I'm getting tired so maybe I'll release an update tomorrow to explain... Or maybe not, who knows?
 
+
+------------------------------------------------
+### It looks like I decided to explain myself...
+
 So, why is this algorithm made how it's made?
 
 If you notice above, I used the bitmask `0b10101010/0b01010101` to provide diffusion. I could have chosen 0b00001111/0b11110000, 0b10010011/0b01101100, etc; but I chose a very boring alternating pattern of `0`s and `1`s. Why?
