@@ -48,3 +48,7 @@ I'm proposing we mix Galois fields with traditional arithmetic. Or more generall
 
 
 *And it's only using constant-time operations.*
+
+
+
+(At least that's the idea)
