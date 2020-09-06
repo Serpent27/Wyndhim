@@ -709,7 +709,7 @@ L_41:
 	LD	BC,(IX+-6)
 	CALL	__ixor
 	LD	A,L
-	AND	A,15
+	AND	A,31
 	UEXT	HL
 	LD	L,A
 	LD	BC,(IX+6)
