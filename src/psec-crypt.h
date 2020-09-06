@@ -180,7 +180,7 @@ void expand_key(unsigned char *key, unsigned char *exp_key){
 		for(b=0; b<KEY_SIZE; ++b){
 			//os_ClrHome();
 //			os_PutStrFull(text);
-			exp_key[a * MSG_SIZE + b] ^= key[((a * 23) ^ b) & MOD_BLK_SIZE];	// 23 is prime, allowing for better shuffling of each round key
+			exp_key[a * MSG_SIZE + b] ^= key[((a * 23) ^ b) & MOD_KEY_SIZE];	// 23 is prime, allowing for better shuffling of each round key
 		}
 	}
 }
