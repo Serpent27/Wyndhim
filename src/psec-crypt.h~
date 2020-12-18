@@ -92,11 +92,11 @@ PSEC_INLINE
 void round_dec_sub(unsigned char *msg, unsigned char *key){	// inverse of round_enc_sub
 	size_t a;
 	for(a=0; a<MSG_SIZE; ++a){
-		msg[a] -= 0xFF;
 		msg[a] ^= round_combinator[a];
+		msg[a] -= 0xFF;
+		msg[a] ^= key[a];
 		msg[a] = ROR(msg[a], 3);
 		msg[a] -= a;
-		msg[a] ^= key[a];
 	}
 }
 PSEC_INLINE

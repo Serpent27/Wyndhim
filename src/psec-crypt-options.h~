@@ -14,11 +14,11 @@
 			// Runs single-core encryption using the current settings	
 #define ENCDEC_CHOICE	// Provides the user with a menu to choose operation
 			// [E]ncrypt/[D]ecrypt/[H]ash/[T]est
-#define LX_BUILD	// Build for Linux/Unix/*nix targets
+//#define LX_BUILD	// Build for Linux/Unix/*nix targets
 			// This should work for Windows too, although I've never tried
-//#define TI84CE_BUILD	// This code was originally designed for the TI-84+CE calculators,
+#define TI84CE_BUILD	// This code was originally designed for the TI-84+CE calculators,
 			// although an optimization I made to improve security against timing-attacks
 			// broke the TI-84+CE build. Maybe sometime I'll fix the TI-84+CE build...?
-#define PC_STATS
+//#define PC_STATS
 
 #endif
