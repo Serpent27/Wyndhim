@@ -112,8 +112,8 @@ void round_mix(unsigned char *msg, unsigned char *tmp){
 	for(a=0; a<MSG_SIZE; a += 2){
 		b = msg[a];
 		c = msg[(a + 1) & MOD_BLK_SIZE];
-		d = (b & 0xAA) | (c & 0x55);
-		e = (b & 0x55) | (c & 0xAA);
+		d = (b & 0xAA) ^ (c & 0x55);
+		e = (b & 0x55) ^ (c & 0xAA);
 		msg[a] = d;
 		msg[(a + 1) & MOD_BLK_SIZE] = e;
 	}
